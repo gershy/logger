@@ -1,7 +1,5 @@
 import { getClsName, inCls, isCls } from '@gershy/clearing';
 
-type LoggerData = null | boolean | number | string | { [limn]: (...args: any) => LoggerData } | LoggerData[] | { [k: string]: LoggerData };
-
 type ScrubOpts = {
   isScrub: (k: string, v: any) => boolean,
   doScrub: (v: any) => Json,
@@ -59,11 +57,11 @@ export default class Logger {
     scope(...args) { return args.at(-1)(Logger.dummy); }
   } as any as Logger;
   
-  private format(v: any /* should not have cycles */, seen = new Map<any, Json>()): Json {
+  private format(v: any, seen = new Map<any, Json>()): Json {
     
     // Formats any value into json (so that it can be logged)
     
-    if (v == null)          return null;
+    if (v == null)         return null;
     if (isCls(v, Boolean)) return v;
     if (isCls(v, Number))  return v;
     if (isCls(v, String))  return v.length > this.opts.maxStrLen ? v.slice(0, this.opts.maxStrLen - 1) + '\u2026' : v;
@@ -124,7 +122,9 @@ export default class Logger {
     
   }
   
-  public log(data: LoggerData) {
+  public log(data: string);
+  public log(data: { $$?: string } & { [K: string]: any });
+  public log(data: string | ({ $$?: string } & { [K: string]: any })) {
     
     // Use-cases:
     // 1. logger.log('a basic string')
