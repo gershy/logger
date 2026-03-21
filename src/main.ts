@@ -37,7 +37,7 @@ const scrubbed = (val: any, opts: Partial<ScrubOpts> = {}): Json => {
     
     const result = {};
     seen.set(val, result);
-    for (const [ k, v ] of val as any as [ string, (typeof val)[keyof typeof val] ][])
+    for (const [ k, v ] of val[cl.walk]())
       result[k] = isScrub(k, v) ? doScrub(v) : scrubbed(v, { isScrub, doScrub, seen });
     return result;
     
