@@ -1,4 +1,10 @@
-import { getClsName, inCls, isCls } from '@gershy/clearing';
+import '@gershy/clearing';
+
+const { getClsName, inCls, isCls } = cl;
+const limn:    typeof cl.limn      = cl.limn;
+const padTail: typeof cl.padTail   = cl.padTail;
+const mod:     typeof cl.mod       = cl.mod;
+const merge:   typeof cl.merge     = cl.merge;
 
 type ScrubOpts = {
   isScrub: (k: string, v: any) => boolean,
