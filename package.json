@@ -1,6 +1,6 @@
 {
   "name": "@gershy/logger",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "TODO",
   "keywords": [
     "TODO"
@@ -16,7 +16,7 @@
   "homepage": "https://github.com/gershy/logger#readme",
   "license": "ISC",
   "peerDependencies": {
-    "@gershy/clearing": "^0.0.35"
+    "@gershy/clearing": "^0.0.36"
   },
   "devDependencies": {
     "@types/node": "^24.10.1",
