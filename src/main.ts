@@ -1,3 +1,6 @@
+// TODO - moved `scrubbed` to instance (injection) or static class prop and this becomes a util??
+// (And rename it to "@gershy/util-watcher" while we're at it??)
+
 import '@gershy/clearing';
 
 const { getClsName, inCls, isCls } = cl;
@@ -65,7 +68,7 @@ export default class Logger {
   
   private format(v: any, seen = new Map<any, Json>()): Json {
     
-    // Formats any value into json (so that it can be logged)
+    // Formats any value into json (for logging)
     
     if (v == null)         return null;
     if (isCls(v, Boolean)) return v;
