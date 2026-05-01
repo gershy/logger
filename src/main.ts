@@ -66,6 +66,25 @@ export default class Logger {
     scope(...args) { return args.at(-1)(Logger.dummy); }
   } as any as Logger;
   
+  private domain: string;
+  private ctx: Obj<Json>;
+  private write: (fullCtx: Obj<Json>) => void;
+  private opts: { maxStrLen: number };
+  constructor(domain: string, ctx: Obj<any> = {}, opts?: typeof this.opts, write?: typeof this.write) {
+    this.domain = domain;
+    this.ctx = {
+      ...ctx,
+      $:                                this.domain,
+      [this.domain.split('.').at(-1)!]: Math.random().toString(36).slice(2, 12)[padTail](10, '0'),
+    };
+    this.opts = opts ?? { maxStrLen: 250 };
+    
+    // Note this default `this.write` function produces truncated values (sloppy outputting) in the
+    // cli, but works perfectly for lambdas with json-style logging configured!
+    
+    this.write = write ?? ((val: Obj<Json>) => console.log(val));
+  }
+  
   private format(v: any, seen = new Map<any, Json>()): Json {
     
     // Formats any value into json (for logging)
@@ -100,25 +119,6 @@ export default class Logger {
     
     return `${getClsName(v)}(...)`;
     
-  };
-  
-  private domain: string;
-  private ctx: Obj<Json>;
-  private write: (fullCtx: Obj<Json>) => void;
-  private opts: { maxStrLen: number };
-  constructor(domain: string, ctx: Obj<any> = {}, opts?: typeof this.opts, write?: typeof this.write) {
-    this.domain = domain;
-    this.ctx = {
-      ...ctx,
-      $:                                this.domain,
-      [this.domain.split('.').at(-1)!]: Math.random().toString(36).slice(2, 12)[padTail](10, '0'),
-    };
-    this.opts = opts ?? { maxStrLen: 250 };
-    
-    // Note this default `this.write` function produces truncated values (sloppy outputting) in the
-    // cli, but works perfectly for lambdas with json-style logging configured!
-    
-    this.write = write ?? ((val: Obj<Json>) => console.log(val));
   }
   
   public getDomain() { return this.domain; }
