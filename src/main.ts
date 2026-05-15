@@ -66,10 +66,10 @@ export default class Logger {
     scope(...args) { return args.at(-1)(Logger.dummy); }
   } as any as Logger;
   
-  private domain: string;
-  private ctx: Obj<Json>;
-  private write: (fullCtx: Obj<Json>) => void;
-  private opts: { maxStrLen: number };
+  protected domain: string;
+  protected ctx: Obj<Json>;
+  protected write: (fullCtx: Obj<Json>) => void;
+  protected opts: { maxStrLen: number };
   constructor(domain: string, ctx: Obj<any> = {}, opts?: typeof this.opts, write?: typeof this.write) {
     this.domain = domain;
     this.ctx = {
@@ -85,7 +85,7 @@ export default class Logger {
     this.write = write ?? ((val: Obj<Json>) => console.log(val));
   }
   
-  private format(v: any, seen = new Map<any, Json>()): Json {
+  protected format(v: any, seen = new Map<any, Json>()): Json {
     
     // Formats any value into json (for logging)
     
